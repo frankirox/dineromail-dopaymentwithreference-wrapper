@@ -8,6 +8,7 @@
  * DineroMailGateway and DineroMail objects.
  */
 require("params.php");
+require("DineroMailDumper.php");
 require("DineroMailException.php");
 require("DineroMailGateway.php");
 require("DineroMailCredentials.php");

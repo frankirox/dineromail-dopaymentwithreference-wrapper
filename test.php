@@ -42,10 +42,10 @@ try {
     $transactionId = time();
     $transaction = new DineroMailAction();
     $transaction->doPaymentWithReference($items, $buyer, $transactionId);
-    var_dump($transaction);
+    DineroMailDumper::dump($transaction,10,true);
 
 } catch (DineroMailException $e) {
 
     // drive the exception
-    var_dump($e);
+    DineroMailDumper::dump($e,10,true);
 }
