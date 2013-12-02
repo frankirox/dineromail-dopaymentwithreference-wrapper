@@ -1,17 +1,20 @@
 <?php
 
-require("../Gateway/DineroMailGateway.php");
+require("../DineroMailGateway.php");
 
-abstract class DineroMailObject {
+abstract class DineroMailObject
+{
 
     protected $_gateway = null;
 
 
-    public final function __construct(DineroMailGateway $gateway) {
+    public final function __construct(DineroMailGateway $gateway)
+    {
         $this->_gateway = $gateway;
     }
 
-    public function getGateway() {
+    public function getGateway()
+    {
         return $this->_gateway;
     }
 
@@ -22,5 +25,5 @@ abstract class DineroMailObject {
      */
     public abstract function asSoapObject();
 
-    
+
 }

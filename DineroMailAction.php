@@ -7,55 +7,60 @@
  * @see DineroMailConnection, DineroMailException, DineroMailCredentials,
  * DineroMailGateway and DineroMail objects.
  */
- require("params.php");
- require("DineroMailException.php");
- require("DineroMailGateway.php");
- require("DineroMailCredentials.php");
- require("DineroMailConnection.php");
- require("Objects/DineroMailObject.php");
- require("Objects/DineroMailBuyer.php");
- require("Objects/DineroMailItem.php");
-
- 
-class DineroMailAction {
+require("params.php");
+require("DineroMailException.php");
+require("DineroMailGateway.php");
+require("DineroMailCredentials.php");
+require("DineroMailConnection.php");
+require("Objects/DineroMailObject.php");
+require("Objects/DineroMailBuyer.php");
+require("Objects/DineroMailItem.php");
 
 
-
-    protected $_currency        = DINEROMAIL_DEFAULT_CURRENCY;
-    protected $_provider        = DINEROMAIL_DEFAULT_PROVIDER;
-
-    protected $_connection      = null;
-    protected $_client          = null;
-	
+class DineroMailAction
+{
 
 
-    public function __construct(DineroMailConnection $connection) {
-	
-	    $credentials = new DineroMailCredentials(DINEROMAIL_API_USER,DINEROMAIL_API_PWD);
-		$gateway = new DineroMailGateway(DINEROMAIL_NS_GATEWAY, DINEROMAIL_WDSL_GATEWAY);
-		$connection = new DineroMailConnection($credentials,$gateway,DINEROMAIL_CONNECTION_ENCRYPTION);
+    protected $_currency = DINEROMAIL_DEFAULT_CURRENCY;
+    protected $_provider = DINEROMAIL_DEFAULT_PROVIDER;
+
+    protected $_connection = null;
+    protected $_client = null;
+
+
+    public function __construct(DineroMailConnection $connection)
+    {
+
+        $credentials = new DineroMailCredentials(DINEROMAIL_API_USER, DINEROMAIL_API_PWD);
+        $gateway = new DineroMailGateway(DINEROMAIL_NS_GATEWAY, DINEROMAIL_WDSL_GATEWAY);
+        $connection = new DineroMailConnection($credentials, $gateway, DINEROMAIL_CONNECTION_ENCRYPTION);
         $this->_connection = $connection;
         $this->setupClient();
     }
 
-    public function setConnection(DineroMailConnection $connection) {
+    public function setConnection(DineroMailConnection $connection)
+    {
         return $this->_connection = $connection;
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->_connection;
     }
 
 
-    public function setProvider($provider) {
+    public function setProvider($provider)
+    {
         return $this->_provider = $provider;
     }
 
-    public function getProvider() {
+    public function getProvider()
+    {
         return $this->_provider;
     }
 
-    protected function getClient() {
+    protected function getClient()
+    {
         return $this->_client;
     }
 
@@ -64,10 +69,11 @@ class DineroMailAction {
      *
      * @return SoapClient the soap object
      */
-    protected function setupClient() {
+    protected function setupClient()
+    {
         $this->_client = new SoapClient($this->getConnection()->getGateway()->getWdsl(),
-                                        array('trace' => 1,
-                                              'exceptions' => 1));  
+            array('trace' => 1,
+                'exceptions' => 1));
     }
 
     /**
@@ -75,15 +81,16 @@ class DineroMailAction {
      *
      * @return SOAPVar the soap object
      */
-    protected function credentialsObject() {
+    protected function credentialsObject()
+    {
 
         $connection = $this->getConnection();
 
         return new SOAPVar(array('APIUserName' => $connection->getCredentials()->getUserName(),
-                                 'APIPassword'=> $connection->getCredentials()->getPassword()),
-                           SOAP_ENC_OBJECT,
-                           'APICredential',
-                           $connection->getGateway()->getNameSpace());
+                'APIPassword' => $connection->getCredentials()->getPassword()),
+            SOAP_ENC_OBJECT,
+            'APICredential',
+            $connection->getGateway()->getNameSpace());
     }
 
     /**
@@ -95,13 +102,13 @@ class DineroMailAction {
      * @return stdClass raw webservice response
      * @throws DineroMailException in case some error
      */
-    protected function call($function, array $parameters) {
+    protected function call($function, array $parameters)
+    {
 
         try {
             $response = $this->getClient()->$function($parameters);
             return $response;
-        }
-        catch (SoapFault $ex) {
+        } catch (SoapFault $ex) {
             throw new DineroMailException($ex->getMessage(), $ex->getCode());
         }
     }
@@ -115,38 +122,39 @@ class DineroMailAction {
      * @param DineroMailBuyer $buyer contains the buyer information
      * @param string $transactionId an unique TX id
      */
-    public public doPaymentWithReference(array $items, DineroMailBuyer $buyer, $transactionId) {
+    public function doPaymentWithReference(array $items, DineroMailBuyer $buyer, $transactionId)
+    {
 
         $messageId = $this->uniqueId();
         $itemsChain = '';
         $oitems = array();
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $itemsChain .= $item;
             $oitems[] = $item->asSoapObject();
         }
-		
+
 
         $hash = $this->hash($transactionId,
-                            $messageId,
-                            $itemsChain,
-                            $buyer,
-							$this->getProvider(),
-							'Subject',
-							'Message',                            
-                            $this->getConnection()->getCredentials()->getPassword());
+            $messageId,
+            $itemsChain,
+            $buyer,
+            $this->getProvider(),
+            'Subject',
+            'Message',
+            $this->getConnection()->getCredentials()->getPassword());
 
 
         $request = array('Credential' => $this->credentialsObject(),
-                         'Crypt' =>  false,
-                         'MerchantTransactionId' => $transactionId,
-                         'UniqueMessageId' => $messageId,
-                         'Provider' => $this->getProvider(),
-                         'Message' => 'Subject',
-                         'Subject' => 'Message',
-                         'Items'=> $oitems,
-                         'Buyer'=> $buyer->asSoapObject(),
-                         'Hash' => $hash);  
+            'Crypt' => false,
+            'MerchantTransactionId' => $transactionId,
+            'UniqueMessageId' => $messageId,
+            'Provider' => $this->getProvider(),
+            'Message' => 'Subject',
+            'Subject' => 'Message',
+            'Items' => $oitems,
+            'Buyer' => $buyer->asSoapObject(),
+            'Hash' => $hash);
 
         $result = $this->call("DoPaymentWithReference", $request);
 
@@ -160,9 +168,10 @@ class DineroMailAction {
      * @param void
      * @return string al simple call to the microtime function
      */
-    protected function uniqueId() {
+    protected function uniqueId()
+    {
 
-        return (string) microtime();
+        return (string)microtime();
     }
 
     /**
@@ -171,12 +180,12 @@ class DineroMailAction {
      * @param 1..n parameters to hash
      * @return string containing the md5
      */
-    protected function hash(/* polimorphic */) {
+    protected function hash( /* polimorphic */)
+    {
 
         $args = func_get_args();
         return md5(implode("", $args));
     }
-	
-	
+
 
 }

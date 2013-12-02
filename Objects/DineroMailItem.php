@@ -5,64 +5,73 @@
  * to the item to be purchased.
  * @see Vendor_DineroMail_Object_Object
  */
- 
-require("DineroMailObject.php");
- 
-class DineroMailItem extends DineroMailObject {
-    
-    protected $_amount      = '';
-    protected $_code        = '';
-    protected $_description = '';
-    protected $_name        = '';
-    protected $_quantity    = 1;
-    protected $_currency    = DINEROMAIL_DEFAULT_CURRENCY;
 
-    
-    public function setAmount($amount) {
+require("DineroMailObject.php");
+
+class DineroMailItem extends DineroMailObject
+{
+
+    protected $_amount = '';
+    protected $_code = '';
+    protected $_description = '';
+    protected $_name = '';
+    protected $_quantity = 1;
+    protected $_currency = DINEROMAIL_DEFAULT_CURRENCY;
+
+
+    public function setAmount($amount)
+    {
         $this->_amount = strval($amount);
     }
-    
-    public function setCode($code) {
+
+    public function setCode($code)
+    {
         $this->_code = $code;
     }
-    
-    public function setCurrency($currency) {
+
+    public function setCurrency($currency)
+    {
         $this->_currency = $currency;
     }
-    
-    public function setDescription($description) {
+
+    public function setDescription($description)
+    {
         $this->_description = $description;
     }
-    
-    public function setName($name) {
+
+    public function setName($name)
+    {
         $this->_name = $name;
     }
 
-    public function setQuantity($quantity) {
+    public function setQuantity($quantity)
+    {
         $this->_quantity = $quantity;
     }
 
-    public function asSoapObject() {
+    public function asSoapObject()
+    {
 
         return new SOAPVar(array('Amount' => $this->_amount,
-                                 'Code' => $this->_code,
-                                 'Currency' => $this->_currency,
-                                 'Description' => $this->_description,
-                                 'Name' => $this->_name,
-                                 'Quantity' => $this->_quantity),
-                           SOAP_ENC_OBJECT,
-                           'Item',
-                           $this->getGateway()->getNameSpace());
+                'Code' => $this->_code,
+                'Currency' => $this->_currency,
+                'Description' => $this->_description,
+                'Name' => $this->_name,
+                'Quantity' => $this->_quantity),
+            SOAP_ENC_OBJECT,
+            'Item',
+            $this->getGateway()->getNameSpace());
     }
 
-    public function __toString() {
+    public function __toString()
+    {
 
         return $this->_amount .
-               $this->_code .
-               $this->_currency .
-               $this->_description .
-               $this->_name .
-               $this->_quantity;
+        $this->_code .
+        $this->_currency .
+        $this->_description .
+        $this->_name .
+        $this->_quantity;
     }
 
 }

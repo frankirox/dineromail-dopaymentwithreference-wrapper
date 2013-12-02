@@ -2,29 +2,33 @@
 
 /**
  * Represents a connection with the webservice
- * 
+ *
  * @see Vendor_DineroMail_Credentials
  * @see Vendor_DineroMail_Gateway_Abstract
  */
-class DineroMailConnection {
+class DineroMailConnection
+{
 
     protected $_credentials = null;
-    protected $_gateway     = null;
-    protected $_crypt       = false;
+    protected $_gateway = null;
+    protected $_crypt = false;
 
 
-    public function __construct(DineroMailCredentials $credentials, 
-                    DineroMailGateway $gateway, $crypt = false) {
+    public function __construct(DineroMailCredentials $credentials,
+                                DineroMailGateway $gateway, $crypt = false)
+    {
         $this->_credentials = $credentials;
-        $this->_gateway     = $gateway;
-        $this->_crypt       = $crypt;
+        $this->_gateway = $gateway;
+        $this->_crypt = $crypt;
     }
 
-    public function getCredentials() {
+    public function getCredentials()
+    {
         return $this->_credentials;
     }
 
-    public function getGateway() {
+    public function getGateway()
+    {
         return $this->_gateway;
     }
 

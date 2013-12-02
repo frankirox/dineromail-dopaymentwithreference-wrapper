@@ -1,21 +1,25 @@
 <?php
 
-class DineroMailGateway {
+class DineroMailGateway
+{
 
     protected $_nameSpace;
     protected $_wdsl;
-    
-	public function __construct($nameSpace , $wdsl) {
+
+    public function __construct($nameSpace, $wdsl)
+    {
         $this->__nameSpace = $nameSpace;
-        $this->_wdsl     = $wdsl;
+        $this->_wdsl = $wdsl;
     }
-    
-    public function getNameSpace() {
+
+    public function getNameSpace()
+    {
         return $this->_nameSpace;
     }
-    
-    public function getWdsl() {
+
+    public function getWdsl()
+    {
         return $this->_wdsl;
     }
-    
+
 }

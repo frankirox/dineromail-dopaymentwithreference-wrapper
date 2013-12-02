@@ -19,16 +19,16 @@ define("DINEROMAIL_API_USER", "TEST");
 define("DINEROMAIL_NS_GATEWAY", "https://api.dineromail.com/");
 define("DINEROMAIL_WDSL_GATEWAY", "https://api.dineromail.com/dmapi.asmx?WSDL");
 
-define("DINEROMAIL_CONNECTION_ENCRYPTION",true);
+define("DINEROMAIL_CONNECTION_ENCRYPTION", true);
 
 /* Possible values:
 *  ARS, BRL, MXN, CLP, USD
 */
-define("DINEROMAIL_DEFAULT_CURRENCY","USD");
+define("DINEROMAIL_DEFAULT_CURRENCY", "USD");
 
 /* Possible values:
 *  rapipago, pagofacil, bapro, cobroexpress
 */
-define("DINEROMAIL_DEFAULT_PROVIDER","pagofacil");
+define("DINEROMAIL_DEFAULT_PROVIDER", "pagofacil");
 
 
