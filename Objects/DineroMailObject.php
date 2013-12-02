@@ -1,7 +1,5 @@
 <?php
 
-require("../DineroMailGateway.php");
-
 abstract class DineroMailObject
 {
     protected $_gateway = null;

@@ -6,8 +6,6 @@
  * @see Vendor_DineroMail_Object_Object
  */
 
-require("DineroMailObject.php");
-
 class DineroMailItem extends DineroMailObject
 {
 
