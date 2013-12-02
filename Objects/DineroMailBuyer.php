@@ -25,7 +25,7 @@ class DineroMailBuyer extends DineroMailObject
 
     public function setCity($city)
     {
-        $this->_address = $city;
+        $this->_city = $city;
     }
 
     public function setCountry($country)

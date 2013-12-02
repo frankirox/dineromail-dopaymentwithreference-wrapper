@@ -8,7 +8,7 @@ class DineroMailGateway
 
     public function __construct($nameSpace, $wdsl)
     {
-        $this->__nameSpace = $nameSpace;
+        $this->_nameSpace = $nameSpace;
         $this->_wdsl = $wdsl;
     }
 

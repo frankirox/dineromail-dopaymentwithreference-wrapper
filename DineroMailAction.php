@@ -28,7 +28,6 @@ class DineroMailAction
     protected $_connection = null;
     protected $_client = null;
 
-
     public function __construct()
     {
 
@@ -72,6 +71,7 @@ class DineroMailAction
      */
     protected function setupClient()
     {
+
         $this->_client = new SoapClient($this->getConnection()->getGateway()->getWdsl(),
             array('trace' => 1,
                 'exceptions' => 1));
@@ -85,13 +85,12 @@ class DineroMailAction
     protected function credentialsObject()
     {
 
-        $connection = $this->getConnection();
 
-        return new SOAPVar(array('APIUserName' => $connection->getCredentials()->getUserName(),
-                'APIPassword' => $connection->getCredentials()->getPassword()),
+        return new SOAPVar(array('APIUserName' => $this->getConnection()->getCredentials()->getUserName(),
+                'APIPassword' => $this->getConnection()->getCredentials()->getPassword()),
             SOAP_ENC_OBJECT,
             'APICredential',
-            $connection->getGateway()->getNameSpace());
+            $this->getConnection()->getGateway()->getNameSpace());
     }
 
     /**
@@ -123,7 +122,7 @@ class DineroMailAction
      * @param DineroMailBuyer $buyer contains the buyer information
      * @param string $transactionId an unique TX id
      */
-    public function doPaymentWithReference(array $items, DineroMailBuyer $buyer, $transactionId)
+    public function doPaymentWithReference(array $items, DineroMailBuyer $buyer, $transactionId, $message, $subject)
     {
 
         $messageId = $this->uniqueId();
@@ -141,9 +140,10 @@ class DineroMailAction
             $itemsChain,
             $buyer,
             $this->getProvider(),
-            'Subject',
-            'Message',
+            $subject,
+            $message,
             $this->getConnection()->getCredentials()->getPassword());
+
 
 
         $request = array('Credential' => $this->credentialsObject(),
@@ -151,11 +151,12 @@ class DineroMailAction
             'MerchantTransactionId' => $transactionId,
             'UniqueMessageId' => $messageId,
             'Provider' => $this->getProvider(),
-            'Message' => 'Subject',
-            'Subject' => 'Message',
+            'Message' => $message,
+            'Subject' => $subject,
             'Items' => $oitems,
             'Buyer' => $buyer->asSoapObject(),
             'Hash' => $hash);
+
 
         $result = $this->call("DoPaymentWithReference", $request);
 
@@ -172,7 +173,7 @@ class DineroMailAction
     protected function uniqueId()
     {
 
-        return (string)microtime();
+        return (string)time();
     }
 
     /**

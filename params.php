@@ -16,8 +16,8 @@ define("DINEROMAIL_API_USER", "TEST");
 *
 */
 
-define("DINEROMAIL_NS_GATEWAY", "https://api.dineromail.com/");
-define("DINEROMAIL_WDSL_GATEWAY", "https://api.dineromail.com/dmapi.asmx?WSDL");
+define("DINEROMAIL_NS_GATEWAY", "https://sandboxapi.dineromail.com/");
+define("DINEROMAIL_WDSL_GATEWAY", "https://sandboxapi.dineromail.com/dmapi.asmx?WSDL");
 
 define("DINEROMAIL_CONNECTION_ENCRYPTION", true);
 

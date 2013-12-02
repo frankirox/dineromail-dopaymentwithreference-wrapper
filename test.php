@@ -7,7 +7,8 @@ require("DineroMailAction.php");
 $buyer = new DineroMailBuyer();
 $buyer->setName("Jhon");
 $buyer->setLastName("Doe");
-$buyer->setAddress("San Diego");
+$buyer->setAddress("San Diego, Boulevard Street");
+$buyer->setCity("San Diego");
 $buyer->setCountry("United States");
 $buyer->setEmail("jhon@doe.com");
 $buyer->setPhone("45556565");
@@ -39,9 +40,9 @@ $items = array($item1, $item2);
 try {
 
     //call the webservice
-    $transactionId = time();
+    $transactionId = "1";
     $transaction = new DineroMailAction();
-    $transaction->doPaymentWithReference($items, $buyer, $transactionId);
+    $transaction->doPaymentWithReference($items, $buyer, $transactionId,"Message","Subject");
     DineroMailDumper::dump($transaction,10,true);
 
 } catch (DineroMailException $e) {
