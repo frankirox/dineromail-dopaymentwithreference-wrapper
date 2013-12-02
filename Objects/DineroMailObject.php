@@ -4,12 +4,12 @@ require("../DineroMailGateway.php");
 
 abstract class DineroMailObject
 {
-
     protected $_gateway = null;
 
 
-    public final function __construct(DineroMailGateway $gateway)
+    public final function __construct()
     {
+        $gateway = new DineroMailGateway(DINEROMAIL_NS_GATEWAY, DINEROMAIL_WDSL_GATEWAY);
         $this->_gateway = $gateway;
     }
 

@@ -28,7 +28,7 @@ class DineroMailAction
     protected $_client = null;
 
 
-    public function __construct(DineroMailConnection $connection)
+    public function __construct()
     {
 
         $credentials = new DineroMailCredentials(DINEROMAIL_API_USER, DINEROMAIL_API_PWD);
