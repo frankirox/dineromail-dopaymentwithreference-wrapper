@@ -31,12 +31,21 @@ $item2->setQuantity(1);
 $item2->setAmount(40.40);
 $item2->setCurrency(DINEROMAIL_DEFAULT_CURRENCY);
 
-$items = array ($item1, $item2);
+$items = array($item1, $item2);
 
 
 /* Execute transaction */
 
-$transactionId = time();
-$transaction = new DineroMailAction();
-$transaction->doPaymentWithReference($items, $buyer,$transactionId);
+try {
 
+    //call the webservice
+    $transactionId = time();
+    $transaction = new DineroMailAction();
+    $transaction->doPaymentWithReference($items, $buyer, $transactionId);
+    var_dump($transaction);
+
+} catch (DineroMailException $e) {
+
+    // drive the exception
+    var_dump($e);
+}
